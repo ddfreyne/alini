@@ -88,6 +88,18 @@ int alini_parser_setcallback_foundkvpair(alini_parser_t *parser, alini_parser_fo
 	return 0;
 }
 
+void alini_parser_set_context(alini_parser_t *parser, void *ctx)
+{
+	assert(parser);
+	parser->ctx = ctx;
+}
+
+void *alini_parser_get_context(alini_parser_t *parser)
+{
+	assert(parser);
+	return parser->ctx;
+}
+
 /* parse one step */
 int alini_parser_step(alini_parser_t *parser)
 {
