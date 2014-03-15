@@ -14,7 +14,23 @@ alini is generally used this way:
 3. Start the parser using `alini_parser_start()`.
 4. Cleanup by disposing the parser using `alini_parser_dispose()`.
 
-A simple example is provided in `main.c`.
+Example:
+
+```c
+alini_parser_t *parser;
+alini_parser_create(&parser, "config.ini");
+alini_parser_setcallback_foundkvpair(parser, &mycallback);
+alini_parser_start(parser);
+alini_parser_dispose(parser);
+```
+
+Where `mycallback` is defined as follows:
+
+```c
+void mycallback(alini_parser_t *parser, char *section, char *key, char *value) {
+   // ...
+}
+```
 
 To "step" the parser, i.e. have it parse the next key/value pair and call the
 callback, use `alini_parser_step()`. Generally, this should not be necessary;
