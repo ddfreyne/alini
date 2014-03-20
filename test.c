@@ -42,6 +42,8 @@ static void staticserverconfig_alini_callback_foundkvpair(alini_parser_t *parser
 
 int main(int argc, char *argv[])
 {
+	alini_parser_t *parser;
+
 	/* check number of arguments */
 	if(2 != argc)
 	{
@@ -50,7 +52,6 @@ int main(int argc, char *argv[])
 	}
 	
 	/* create parser */
-	alini_parser_t *parser;
 	if(-1 == alini_parser_create(&parser, argv[1]))
 	{
 		printf("Couldn't create parser! Is the file '%s' readable?\n", argv[1]);
