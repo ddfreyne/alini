@@ -31,7 +31,7 @@
 #include "alini.h"
 
 /* strips whitespace at beginning and end of string */
-static inline char *stripws(char *str, size_t len)
+static char *stripws(char *str, size_t len)
 {
 	int i = 0;
 	int j = 0;
@@ -220,7 +220,11 @@ int alini_parser_dispose(alini_parser_t *parser)
 	assert(parser);
 	
 	/* close file */
-	fclose(parser->file);
+	if (parser->file)
+		fclose(parser->file);
+
+	if (parser->path)
+		free(parser->path);
 	
 	/* free parser */
 	free(parser);
