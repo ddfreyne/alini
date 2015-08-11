@@ -35,7 +35,8 @@ static char *stripws(char *str, size_t len)
 {
 	int i = 0;
 	int j = 0;
-	char *newstr;
+	int newlen = 0;
+	char *newstr = NULL;
 
 	/* find whitespace at start of string */
 	for(;isspace(str[i]);i++) ;
@@ -45,9 +46,12 @@ static char *stripws(char *str, size_t len)
 	++j;
 
 	/* make new string */
-	newstr = (char *)calloc(j-i+1, sizeof(char));
+	newlen = j-i;
+	if (newlen < 0) newlen = 0;
+	newstr = (char *)calloc(newlen+1, sizeof(char));
 	if(!newstr) return NULL;
-	memcpy(newstr, str+i, j-i);
+
+	memcpy(newstr, str+i, newlen);
 	newstr[j-i] = '\0';
 
 	return newstr;
