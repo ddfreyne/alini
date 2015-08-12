@@ -58,7 +58,7 @@ static char *stripws(char *str, size_t len)
 }
 
 /* create parser */
-int alini_parser_create(alini_parser_t **parser, char *path)
+int alini_parser_create(alini_parser_t **parser, const char *path)
 {
 	assert(parser);
 	assert(path);
@@ -72,7 +72,7 @@ int alini_parser_create(alini_parser_t **parser, char *path)
 	(*parser)->on = 1;
 	
 	/* copy path */
-	(*parser)->path = strdup(path);
+	if (!((*parser)->path = strdup(path))) return -1;
 	
 	/* open file */
 	(*parser)->file = fopen(path, "r");

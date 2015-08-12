@@ -45,7 +45,7 @@ struct alini_parser_s {
 };
 
 /* create parser */
-int alini_parser_create(alini_parser_t **parser, char *path);
+int alini_parser_create(alini_parser_t **parser, const char *path);
 
 /* set `found key-value pair` callback */
 int alini_parser_setcallback_foundkvpair(alini_parser_t *parser, alini_parser_foundkvpair_callback callback);
