@@ -31,11 +31,12 @@
 #include "alini.h"
 
 /* strips whitespace at beginning and end of string */
-static inline char *stripws(char *str, size_t len)
+static char *stripws(char *str, size_t len)
 {
 	int i = 0;
 	int j = 0;
-	char *newstr;
+	int newlen = 0;
+	char *newstr = NULL;
 
 	/* find whitespace at start of string */
 	for(;isspace(str[i]);i++) ;
@@ -45,16 +46,19 @@ static inline char *stripws(char *str, size_t len)
 	++j;
 
 	/* make new string */
-	newstr = (char *)calloc(j-i+1, sizeof(char));
+	newlen = j-i;
+	if (newlen < 0) newlen = 0;
+	newstr = (char *)calloc(newlen+1, sizeof(char));
 	if(!newstr) return NULL;
-	memcpy(newstr, str+i, j-i);
+
+	memcpy(newstr, str+i, newlen);
 	newstr[j-i] = '\0';
 
 	return newstr;
 }
 
 /* create parser */
-int alini_parser_create(alini_parser_t **parser, char *path)
+int alini_parser_create(alini_parser_t **parser, const char *path)
 {
 	assert(parser);
 	assert(path);
@@ -68,7 +72,7 @@ int alini_parser_create(alini_parser_t **parser, char *path)
 	(*parser)->on = 1;
 	
 	/* copy path */
-	(*parser)->path = strdup(path);
+	if (!((*parser)->path = strdup(path))) return -1;
 	
 	/* open file */
 	(*parser)->file = fopen(path, "r");
@@ -220,7 +224,11 @@ int alini_parser_dispose(alini_parser_t *parser)
 	assert(parser);
 	
 	/* close file */
-	fclose(parser->file);
+	if (parser->file)
+		fclose(parser->file);
+
+	if (parser->path)
+		free(parser->path);
 	
 	/* free parser */
 	free(parser);
